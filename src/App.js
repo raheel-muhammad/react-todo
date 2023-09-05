@@ -10,28 +10,20 @@ export default function App() {
   const handleInputChange = (event) => {
     setInputValue(event.target.value)
   }
-  const handleEnterKey = (event) => {
-    if (event.key === 'Enter' && inputvalue.trim() !== '') {
-      setItems([...items, inputvalue]);
-      setInputValue('');
-    }
-  }
+  let disabled = !inputvalue.trim()
   const handleClick = () => {
     let item = inputvalue.trim()
-    if (!item) {
-      alert('please fill out this field')
+    if (isEdit) {
+      let tempArr = [...items]
+      tempArr[currIndex] = item
+      setItems(tempArr)
+      setInputValue('')
+      setIsEdit(false)
     } else {
-      if (isEdit) {
-        let tempArr = [...items]
-        tempArr[currIndex] = item
-        setItems(tempArr)
-        setInputValue('')
-        setIsEdit(false)
-      } else {
-        setItems((prevItems) => [...prevItems, item]);
-        setInputValue('')
-      }
+      setItems((prevItems) => [...prevItems, item]);
+      setInputValue('')
     }
+
   }
   const editClick = (item, index) => {
     setInputValue(item)
@@ -52,18 +44,26 @@ export default function App() {
       setCurrIndex()
     }
   }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (isEdit) {
+      editClick()
+    } else {
+      handleClick()
+    }
+  }
 
   return (
     <>
       <div className='container'>
         <div className="heading">Todo List</div>
-        <div className='form'>
-          <input className='input' type="text" maxLength={100} placeholder='Enter anything you want' value={inputvalue} onChange={handleInputChange} onKeyDown={handleEnterKey} />
+        <form className='form' onSubmit={handleSubmit}>
+          <input className='input' type="text" maxLength={100} placeholder='Enter anything you want' value={inputvalue} onChange={handleInputChange} />
           <div className='button-2'>
-            <button className='btn btn-add' onClick={handleClick}>{isEdit ? "Edit" : "Add"}</button>
-            <button className='btn btn-cancel' onClick={resetItem}>{isEdit ? 'Reset' : 'Cancel'}</button>
+            <button className={`'btn' ${!inputvalue ? "light-grey" : "btn-add"}`} onClick={handleClick} disabled={disabled} type='submit'>{isEdit ? "Edit" : "Add"}</button>
+            <button className='btn btn-cancel' onClick={resetItem} type='button'>{isEdit ? 'Reset' : 'Cancel'}</button>
           </div>
-        </div>
+        </form>
 
 
         <div className='ul-list'>
