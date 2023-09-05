@@ -60,8 +60,8 @@ export default function App() {
         <form className='form' onSubmit={handleSubmit}>
           <input className='input' type="text" maxLength={100} placeholder='Enter anything you want' value={inputvalue} onChange={handleInputChange} />
           <div className='button-2'>
-            <button className={`'btn' ${!inputvalue ? "light-grey" : "btn-add"}`} onClick={handleClick} disabled={disabled} type='submit'>{isEdit ? "Edit" : "Add"}</button>
-            <button className='btn btn-cancel' onClick={resetItem} type='button'>{isEdit ? 'Reset' : 'Cancel'}</button>
+            <button className={`${!inputvalue ? "light-grey" : "btn-add"}`} onClick={handleClick} disabled={disabled} type='submit'>{isEdit ? "Update" : "Add"}</button>
+            <button className={`${!inputvalue ? "btn-1" : "btn-cancel"}`} onClick={resetItem} type='button'>{isEdit ? 'Reset' : 'Cancel'}</button>
           </div>
         </form>
 
