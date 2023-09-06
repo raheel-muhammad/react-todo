@@ -149,12 +149,15 @@
   background-color: gray;
   color: aliceblue;
   border-radius: 4px;
+  outline: none;
   padding: 0 8px;
+  border: 1px solid #828282;
   font-weight: 600;
   font-size: 15px;
   height: 40px;
+  margin: 10px;
   cursor: pointer;
-  padding: 0 8PX;
+
 }
 
 @media only screen and (max-width:715px) {
