@@ -39,10 +39,11 @@
   word-break: break-all;
   font-size: 20px;
   vertical-align: middle;
-  padding-left: 10px;
   display: flex;
   align-items: center;
   width: 70%;
+  padding-left: 10px;
+  padding-right: 10px;
 
 }
 
