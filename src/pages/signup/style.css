@@ -24,6 +24,18 @@
     display: flex;
     flex-direction: column;
 }
+.pass-section {
+    display: flex;
+    width: 100%;
+    margin-bottom: 30px;
+    flex-direction: column;
+}
+.confirm-pass-section {
+    display: flex;
+    width: 100%;
+    margin-top: 30px;
+    flex-direction: column;
+}
 
 .my-label {
     display: inline-block;
@@ -64,18 +76,7 @@ a {
 
 }
 
-.pass-section {
-    display: flex;
-    width: 100%;
-    margin-bottom: 30px;
-    flex-direction: column;
-}
-.confirm-pass-section {
-    display: flex;
-    width: 100%;
-    margin-top: 30px;
-    flex-direction: column;
-}
+
 .btn:hover {
     background-color: darkslategray;
 }
