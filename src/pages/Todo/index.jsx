@@ -1,23 +1,32 @@
-import { doc, updateDoc,getDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { db } from "../../lib/firebase";
+import { getAuth, signOut } from "firebase/auth";
 import "./style.css";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {useSelector} from "react-redux";
+import { useEffect } from "react";
+import { logOutUser } from "../../redux/actions";
+
 export default function Todo() {
+  const state= useSelector(state=>state)
+
+  console.log(state.loginUser.userData.items,"123");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [inputvalue, setInputValue] = useState("");
   const [items, setItems] = useState([]);
-  console.log('items',items)
   const [isEdit, setIsEdit] = useState(false);
   const [currIndex, setCurrIndex] = useState();
-  const state= useSelector(state=>state)
-  console.log('state',state.loginUser.userId)
-
-
+ 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
+  useEffect(()=>{
+   setItems (state.loginUser.userData.items||[])
+  },[state.loginUser.userData.items])
 
-  
 
   let disabled = !inputvalue.trim();
   const handleClick = async() => {
@@ -29,6 +38,7 @@ export default function Todo() {
       setInputValue("");
       setIsEdit(false);
       updateDataToFirestore(tempArr);
+     
     } else {
       let todoList=[...items, item]
       await updateDataToFirestore(todoList)
@@ -60,8 +70,7 @@ export default function Todo() {
     }
   };
 const updateDataToFirestore=async(todoList) => {
-  console.log('test first')
-  const usersRef = doc(db, "users", state.loginUser.userId);
+  const usersRef = doc(db, "users", state?.loginUser?.userId);
   await updateDoc(usersRef, {
     items:todoList
   }).then((res)=>{
@@ -71,21 +80,22 @@ const updateDataToFirestore=async(todoList) => {
   });
 }
 
-
-const docRef = doc(db, "users", state.loginUser.userId);
-const docSnap =  getDoc(docRef);
-
-if (docSnap.exists()) {
-  console.log("Document data:", docSnap.items());
-} else {
-  console.log("No such document!");
+const handleLogOut =async()=>{
+const auth = await  getAuth();
+await signOut(auth).then((res) => {
+  console.log("auth",res);
+  dispatch(logOutUser());
+  navigate("/signin")
+}).catch((error) => {
+  console.log("error",error);
+});
 }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit =  (e) => {
     e.preventDefault();
     console.log(inputvalue);
     setItems([...items, inputvalue]); 
-    console.log('testig')
+    console.log('testing')
     if (isEdit) {
       editClick();
     } else {
@@ -94,8 +104,11 @@ if (docSnap.exists()) {
   };
 
  
+
+
   return (
     <div className="container">
+      <button className="log-out-btn" onClick={handleLogOut}>Log Out</button>
       <div className="heading">Todo List</div>
       <form className="form" onSubmit={handleSubmit}>
         <input

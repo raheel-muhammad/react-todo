@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUpSchema } from "../../schemas";
 import { useDispatch } from "react-redux";
-import { getUserId } from "../../redux/actions";
+import { getUserData } from "../../redux/actions";
 
 import "./style.css";
 // import { app } from "../../lib/firebase";
@@ -29,22 +29,22 @@ const SignUp = () => {
     onSubmit: async (values) => {
       setLoading(true);
       try {
-        const data = await createUserWithEmailAndPassword(
+        await createUserWithEmailAndPassword(
           auth,
           values.email,
           values.password,
-        );
-        if (data) {
+        )
+        .then(async(data) => {
           const uid = data?.user?.uid;
           await setDoc(doc(db, "users", uid), {
             email:values.email,
             userId:uid
           });
-          dispatch(getUserId(uid))
+          dispatch(getUserData(uid))
           navigate("/todo");
           formik.resetForm();
           setLoading(false);
-        }
+        })
       } catch (error) {
         alert(error);
         console.log(error);

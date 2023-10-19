@@ -1,9 +1,9 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUserId } from "../../redux/actions";
+import { getUserData } from "../../redux/actions";
 import { signInSchema } from "../../schemas";
 import "./style.css";
 
@@ -12,6 +12,8 @@ const SignIn = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 const dispatch = useDispatch();
+const state = useSelector((state) => state);
+console.log('second',state);
 
   const auth = getAuth();
 
@@ -33,14 +35,14 @@ const dispatch = useDispatch();
         console.log('test')
         const {uid} = data.user;
         if (data) {
+          dispatch(getUserData(uid))
           setLoading(false);
-          dispatch(getUserId(uid))
           navigate("/todo");
 
         }
       } catch (error) {
         setLoading(false);
-        alert(error.message);
+        alert((error?.message.split("/")[1].replace(")", "")));
         console.log('testing error',error);
       }
     },

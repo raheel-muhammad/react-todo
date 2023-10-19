@@ -115,6 +115,25 @@
   cursor: pointer;
 
 }
+.log-out-btn{
+  width: 80px;
+  background-color: gray;
+  color: aliceblue;
+  border-radius: 50px;
+  outline: none;
+  padding: 0 8px;
+  border: 1px solid #828282;
+  font-weight: 600;
+  font-size: 15px;
+  height: 40px;
+  margin: 10px;
+  cursor: pointer;
+  margin-left: 627px;
+}
+.log-out-btn:hover{
+  background-color: #f1f1f1;
+  color: #000;
+}
 
 .btn-l8grey {
   background-color: #f1f1f1;
